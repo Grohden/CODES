@@ -10,8 +10,11 @@ process.env.ENV = (function(gulpArguments){
     
     //Arg to force prod (also override the --dev arg)
     let forceProd = gulpArguments.includes('--prod');
+    let contains = gulpArguments.every(function(arg){
+        return devTasks.includes(arg)
+    });
     
-    if(gulpArguments.includes.apply(gulpArguments, devTasks) && !forceProd){
+    if(contains && !forceProd){
         console.log('==== Dev ===');
         return 'dev';
     }
