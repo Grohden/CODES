@@ -93,22 +93,63 @@ Object.prototype.getSafe = function(object, str){
         return undefined;
     }
 
-	if(typeof object !== 'object'){
-		console.error('cannot acess property of non object');
-		return undefined;
-	}
+    if(typeof object !== 'object'){
+	console.error('cannot acess property of non object');
+	return undefined;
+    }
 
-	propList = str.split('.');
+    propList = str.split('.');
     var currentValue = object;
     
     var i = 0;
     for(i = 0; i < propList.length; i++){
-		currentValue = currentValue[propList[i]];
+	currentValue = currentValue[propList[i]];
 
-		if(typeof currentValue !== 'object' && i !== propList.length-1){
-			return undefined;		
-		}
+	if(typeof currentValue !== 'object' && i !== propList.length-1){
+		return undefined;		
+	}
     }
 
-	return currentValue;
+    return currentValue;
 }
+
+//TODO: JSDOC THIS!
+(function(){
+    'use strict';
+
+    /** Message object, to avoid non readable text concatenation*/
+    function Message(){
+        var mainContext = this;
+        var msg = '';
+        var fns = {
+            append: append,
+            toString: function(){return msg;}
+        };
+
+        function append(text){
+            var textArg = text;
+            if(arguments.length > 1){
+               for(var i = 1; i < arguments.length; i++){
+                   textArg = arguments[i](textArg);
+               }
+            }
+
+            msg+= textArg;
+            return fns;
+        }
+ 
+
+        return fns;
+    }       
+
+    Message.bold = function(word){
+        return (word + '').bold();
+    }
+
+    Message.spaced = function(word){
+        return (' ' + word + ' ');
+    }
+    
+    //What else?
+    //FIXME: use export ?
+})();
