@@ -113,11 +113,13 @@ Object.prototype.getSafe = function(object, str){
     return currentValue;
 }
 
-//TODO: JSDOC THIS!
-(function(){
+(function(exportTo){
     'use strict';
 
-    /** Message object, to avoid non readable text concatenation*/
+    /** 
+     * Message object, to avoid non readable text concatenation
+     * @class Message
+     */
     function Message(){
         var mainContext = this;
         var msg = '';
@@ -126,7 +128,14 @@ Object.prototype.getSafe = function(object, str){
             toString: function(){return msg;}
         };
 
-        function append(text){
+        /**
+         * @name Message#append
+         * @memberOf Message
+         * @description appends a string applying the given modifiers
+         * @param {String} text 
+         * @param {...Function} [modifiers] modifiers to the string
+         */
+        function append(text, modifiers){
             var textArg = text;
             if(arguments.length > 1){
                for(var i = 1; i < arguments.length; i++){
@@ -142,14 +151,53 @@ Object.prototype.getSafe = function(object, str){
         return fns;
     }       
 
+    /**
+     * @name Message.bold
+     * @memberOf Message
+     * @param {String} word
+     */
     Message.bold = function(word){
         return (word + '').bold();
     }
 
+    /**
+     * @name Message.lower
+     * @memberOf Message
+     * @param {String} word
+     */
+    Message.lower = function(word){
+        return (word + '').toLowerCase();
+    }
+
+    /**
+     * @name Message.spaced
+     * @memberOf Message
+     * @param {String} word
+     */
     Message.spaced = function(word){
         return (' ' + word + ' ');
+    }
+
+    /**
+     * @name Message.spacedLeft
+     * @memberOf Message
+     * @param {String} text 
+     * @param {...Function} modifiers modifiers to the string
+     */
+    Message.spacedLeft = function(word){
+        return (' ' + word);
+    }
+
+    /**
+     * @name Message.spacedRight
+     * @memberOf Message
+     * @param {String} word
+     */
+    Message.spacedRight = function(word){
+        return (word + ' ');
     }
     
     //What else?
     //FIXME: use export ?
-})();
+    exportTo.Message = Message;
+})(window);
